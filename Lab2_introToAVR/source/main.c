@@ -1,5 +1,5 @@
 /*	Author: pnguy086
- *  Partner(s) Name: 
+ *  Partner(s) Name:
  *	Lab Section:
  *	Assignment: Lab #  Exercise #
  *	Exercise Description: [optional - include for your own benefit]
@@ -14,10 +14,11 @@
 
 int main(void) {
     /* Insert DDR and PORT initializations */
-
+    DDRB = 0xFF;
+    PORTB = 0X00;
     /* Insert your solution below */
     while (1) {
-
+        PORTB = 0X0F;
     }
     return 1;
 }
