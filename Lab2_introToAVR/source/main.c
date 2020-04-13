@@ -20,7 +20,7 @@
    unsigned char cntavail = 0x00;
    while(1) {
  		   // 1) Read input
- 		   tmpA = !PINA & 0x0F; //changes inputs so that 1 is available, 0 is full
+ 		   tmpA = PINA & 0x0F; 
  		   // 2) Perform computation
  		   //count the number of spaces available
        switch (tmpA){
