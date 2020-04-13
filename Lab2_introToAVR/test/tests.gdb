@@ -129,10 +129,10 @@ continue 5
 expectPORTC 0x01
 check result
 
-test "PINA = 0x0F => PORTC: 0x00"
+test "PINA = 0x0F => PORTC: 0x80"
 setPINA 0x0F
 continue 5
-expectPORTC 0x00
+expectPORTC 0x80
 check result
 # Report on how many tests passed/tests ran
 set $passed=$tests-$failed

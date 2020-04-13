@@ -20,7 +20,7 @@
    unsigned char cntavail = 0x00;
    while(1) {
  		   // 1) Read input
- 		   tmpA = PINA & 0x0F; 
+ 		   tmpA = PINA & 0x0F;
  		   // 2) Perform computation
  		   //count the number of spaces available
        switch (tmpA){
@@ -52,11 +52,11 @@
             break;
        }
  	      // 3) Write output
-        //if(cntavail == 0){
-          //PORTC = 0x80;
-        //} else {
+        if(cntavail == 0){
+          PORTC = 0x80;
+        } else {
           PORTC = cntavail;
-        //}
+        }
  	  }
  	  return 0;
  }
