@@ -19,9 +19,9 @@
  	 unsigned char tmpA = 0x00; // Temporary variable to hold the value of A
    while(1) {
  		   // 1) Read input
- 		   tmpA = PINA & 0x01;
+ 		   tmpA = PINA & 0x03;
  		   // 2) Perform computation
- 		   // if PA0 is 1, set PB0 to 1, else set it to 0
+ 		   // if PA1PA0 is 01, set PB0 to 1, else set it to 0
  		    if (tmpA == 0x01) { // True if PA0 is 1
  			      tmpB = (tmpB & 0xFE) | 0x01; // Sets tmpB to bbbbbb01
  							                           // (clear rightmost 2 bits, then set to 01)
