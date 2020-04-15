@@ -15,22 +15,34 @@
 int main(void) {
     /* Insert DDR and PORT initializations */
     DDRA = 0x00; PORTA = 0xFF;
-    DDRB = 0x00; PORTB = 0xFF;
     DDRC = 0xFF; PORTC = 0x00;
     /* Insert your solution below */
-    unsigned char tmpA = 0;
-    unsigned char tmpB = 0;
-    unsigned char count = 0;
+    unsigned char level = 0;
+    unsigned char tmpC = 0;
     while (1) {
-        tmpA = PINA;
-        tmpB = PINB;
+        level = PINA & 0x0F;
 
-        count = ((tmpA & 0x80) >> 7) + ((tmpA & 0x40) >> 6) + ((tmpA & 0x20) >> 5) + ((tmpA & 0x10) >> 4) +
-                ((tmpA & 0x08) >> 3) + ((tmpA & 0x04) >> 2) + ((tmpA & 0x02) >> 1) + (tmpA & 0x01) +
-                ((tmpB & 0x80) >> 7) + ((tmpB & 0x40) >> 6) + ((tmpB & 0x20) >> 5) + ((tmpB & 0x10) >> 4) +
-                ((tmpB & 0x08) >> 3) + ((tmpB & 0x04) >> 2) + ((tmpB & 0x02) >> 1) + (tmpB & 0x01);
+        if(level >= 13 && level <= 15){
+          tmpC = 0x3F; //PC5 - PC0
+        } else if (level >= 10) {
+          tmpC = 0x3E; //PC5 - PC1
+        } else if (level >= 7) {
+          tmpC = 0x3C; //PC5 - PC2
+        } else if (level >= 5) {
+          tmpC = 0x38; //PC5 - PC3
+        } else if (level >= 3) {
+          tmpC = 0x30; //PC5 - PC4
+        } else if (level > 0) {
+          tmpC = 0x20; //PC5
+        }
 
-        PORTC = count;
+        //remains 0 if level 0
+
+        if(level < 5){
+          tmpC = tmpC | 0x40;
+        }
+
+        PORTC = tmpC;
     }
     return 1;
 }
