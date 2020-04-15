@@ -42,6 +42,10 @@ int main(void) {
           tmpC = tmpC | 0x40;
         }
 
+        if((PINA & 0x70) == 0x30){
+          tmpC = tmpC | 0x80;
+        }
+
         PORTC = tmpC;
     }
     return 1;
