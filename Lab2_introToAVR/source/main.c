@@ -14,49 +14,43 @@
 
  int main(void) {
    DDRA = 0x00; PORTA = 0xFF; // Configure port A's 8 pins as inputs
- 	 DDRC= 0xFF; PORTC = 0x00; // Configure port C's 8 pins as outputs, initialize to 0s
+   DDRB = 0x00; PORTB = 0xFF; // Configure port B's 8 pins as inputs
+   DDRC = 0x00; PORTC = 0xFF; // Configure port C's 8 pins as inputs
+ 	 DDRD= 0xFF; PORTD = 0x00; // Configure port D's 8 pins as outputs, initialize to 0s
  	 //unsigned char tmpB = 0x00; // Temporary variable to hold the value of B
  	 unsigned char tmpA = 0x00; // Temporary variable to hold the value of A
-   unsigned char cntavail = 0x00;
+   unsigned char tmpB = 0x00; // Temporary variable to hold the value of B
+   unsigned char tmpC = 0x00; // Temporary variable to hold the value of C
+   unsigned char tmpD = 0x00;
+   unsigned char totalWeight = 0x00;
+   unsigned char diffAC = 0x00;
    while(1) {
  		   // 1) Read input
- 		   tmpA = PINA & 0x0F;
+ 		   tmpA = PINA;
+       tmpB = PINB;
+       tmpC = PINC;
  		   // 2) Perform computation
- 		   //count the number of spaces available
-       switch (tmpA){
-         case 0x00:
-            cntavail = 0x04;
-            break;
-         case 0x01:
-         case 0x02:
-         case 0x04:
-         case 0x08:
-            cntavail = 0x03;
-            break;
-         case 0x03:
-         case 0x05:
-         case 0x09:
-         case 0x0A:
-         case 0x06:
-         case 0x0C:
-            cntavail = 0x02;
-            break;
-         case 0x07:
-         case 0x0B:
-         case 0x0D:
-         case 0x0E:
-            cntavail = 0x01;
-            break;
-         case 0x0F:
-            cntavail = 0x00;
-            break;
+ 		   //calculate weight & difference between A and C
+       totalWeight = tmpA + tmpB + tmpC;
+       if(tmpA > tmpC){
+         diffAC = tmpA - tmpC;
+       } else {
+         diffAC = tmpC - tmpA;
        }
  	      // 3) Write output
-        if(cntavail == 0){
-          PORTC = 0x80;
-        } else {
-          PORTC = cntavail;
+        //PD0
+        if(totalWeight > 140) {
+          tmpD = tmpD | 0x01;
         }
+        //PD1
+        if(diffAC > 80){
+          tmpD = tmpD | 0x02;
+        }
+
+        //PD7...PD2
+        tmpD = tmpD | (totalWeight & 0xFC);
+
+        PORTD = tmpD;
  	  }
  	  return 0;
  }
