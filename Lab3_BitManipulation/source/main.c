@@ -14,15 +14,21 @@
 
 int main(void) {
     /* Insert DDR and PORT initializations */
-    DDRA = 0x00; PORTA = 0xFF;
-    DDRB = 0xFF; PORTB = 0x00;
-    DDRC = 0xFF; PORTC = 0x00;
+    DDRD = 0x00; PORTD = 0xFF;
+    DDRB = 0xFE; PORTB = 0x01; //set PB0 to input and PB7...PB1 as output
     /* Insert your solution below */
-    unsigned char tmpA = 0;
+    unsigned char tmpB = 0;
+    unsigned short weight = 0;
     while (1) {
-        tmpA = PINA;
-        PORTB = tmpA >> 4;
-        PORTC = tmpA << 4;
+        tmpB = PINB & 0x01;
+        weight = (PIND << 1) | tmpB;
+
+        if(weight >= 70){
+          tmpB = tmpB | 0x04;
+        } else if(weight > 5) {
+          tmpB = tmpB | 0x02;
+        }
+        PORTB = tmpB;
     }
     return 1;
 }
