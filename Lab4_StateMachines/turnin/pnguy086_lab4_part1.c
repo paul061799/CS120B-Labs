@@ -38,7 +38,6 @@ void Tick() {
 
     switch(state){
         case Start:
-            PORTB = 0x01;
             break;
         case B0_Release:
             break;
