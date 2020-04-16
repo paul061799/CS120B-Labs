@@ -42,32 +42,32 @@ echo Running all tests..."\n\n
 #Test SM initialization
 test "PINA: 0x00 => PORTB: 0x01, state: B0_Release"
 setPINA 0x00
-continue 1
-continue 1
+continue 5
+continue 5
 expectPORTB 0x01
 expect state B0_Release
 checkResult
 
-#Test 1 button press, no release
+#Test 5 button press, no release
 test "PINA: 0x00, 0x01 => PORTB: 0x02, state: B1_Press"
 set state = B0_Release
 setPINA 0x00
-continue 1
+continue 5
 setPINA 0x01
-continue 1
+continue 5
 expectPORTB 0x02
 expect state B0_Press
 checkResult
 
-#Test 1 button press and release
+#Test 5 button press and release
 test "PINA: 0x00, 0x01, 0x00 => PORTB: 0x02, state: B1_Release"
 set state = B0_Release
 setPINA 0x00
-continue 1
+continue 5
 setPINA 0x01
-continue 1
+continue 5
 setPINA 0x00
-continue 1
+continue 5
 expectPORTB 0x02
 expect state B1_Release
 checkResult
@@ -76,13 +76,13 @@ checkResult
 test "PINA: 0x00, 0x01, 0x00, 0x01 => PORTB: 0x01, state: B0_Press"
 set state = B0_Release
 setPINA 0x00
-continue 1
+continue 5
 setPINA 0x01
-continue 1
+continue 5
 setPINA 0x00
-continue 1
+continue 5
 setPINA 0x01
-continue 1
+continue 5
 expectPORTB 0x01
 expect state B1_Press
 checkResult
@@ -91,15 +91,15 @@ checkResult
 test "PINA: 0x00, 0x01, 0x00, 0x01 => PORTB: 0x01, state: B0_Release"
 set state = B0_Release
 setPINA 0x00
-continue 1
+continue 5
 setPINA 0x01
-continue 1
+continue 5
 setPINA 0x00
-continue 1
+continue 5
 setPINA 0x01
-continue 1
+continue 5
 setPINA 0x00
-continue 1
+continue 5
 expectPORTB 0x01
 expect state B0_Release
 checkResult
