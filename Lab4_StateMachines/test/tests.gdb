@@ -49,7 +49,7 @@ expect state B0_Release
 checkResult
 
 #Test 1 button press, no release
-test "PINA: 0x00, 0x01 => PORTB: 0x02, state: B0_Press"
+test "PINA: 0x00, 0x01 => PORTB: 0x02, state: B1_Press"
 setPINA 0x00
 continue 5
 setPINA 0x01
@@ -71,7 +71,7 @@ expect state B1_Release
 checkResult
 
 #Test 2nd button press, no release
-test "PINA: 0x00, 0x01, 0x00, 0x01 => PORTB: 0x01, state: B1_Press"
+test "PINA: 0x00, 0x01, 0x00, 0x01 => PORTB: 0x01, state: B0_Press"
 setPINA 0x00
 continue 5
 setPINA 0x01

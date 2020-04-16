@@ -20,16 +20,16 @@ void Tick() {
             state = B0_Release;
             break;
         case B0_Release:
-            state = (PINA == 0x01) ? B0_Press : B0_Release;
-            break;
-        case B0_Press:
-            state = (PINA == 0x01) ? B0_Press : B1_Release;
-            break;
-        case B1_Release:
-            state = (PINA == 0x01) ? B1_Press : B1_Release;
+            state = (PINA == 0x01) ? B1_Press : B0_Release;
             break;
         case B1_Press:
-            state = (PINA == 0x01) ? B1_Press : B0_Release;
+            state = (PINA == 0x01) ? B1_Press : B1_Release;
+            break;
+        case B1_Release:
+            state = (PINA == 0x01) ? B0_Press : B1_Release;
+            break;
+        case B1_Press:
+            state = (PINA == 0x01) ? B0_Press : B0_Release;
             break;
         default:
             printf("State Transition Error\n");
@@ -43,12 +43,12 @@ void Tick() {
         case B0_Release:
             break;
         case B0_Press:
-            PORTB = 0x02;
+            PORTB = 0x01;
             break;
         case B1_Release:
             break;
         case B1_Press:
-            PORTB = 0x01;
+            PORTB = 0x02;
             break;
         default:
             printf("State Action Error \n");
@@ -62,6 +62,7 @@ int main(void) {
     DDRB = 0xFF; PORTB = 0x00;
     /* Insert your solution below */
     state = Start;
+    PORTB = 0x01;
     while (1) {
       Tick();
     }
