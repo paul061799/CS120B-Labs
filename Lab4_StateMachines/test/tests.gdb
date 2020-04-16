@@ -56,7 +56,7 @@ continue 5
 setPINA 0x01
 continue 5
 expectPORTB 0x02
-expect state B0_Press
+expect state B1_Press
 checkResult
 
 #Test 5 button press and release
@@ -84,7 +84,7 @@ continue 5
 setPINA 0x01
 continue 5
 expectPORTB 0x01
-expect state B1_Press
+expect state B0_Press
 checkResult
 
 #Test 2nd button press and release
