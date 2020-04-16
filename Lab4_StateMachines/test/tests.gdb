@@ -50,6 +50,7 @@ checkResult
 
 #Test 1 button press, no release
 test "PINA: 0x00, 0x01 => PORTB: 0x02, state: B1_Press"
+set state = B0_Release
 setPINA 0x00
 continue 1
 setPINA 0x01
@@ -60,6 +61,7 @@ checkResult
 
 #Test 1 button press and release
 test "PINA: 0x00, 0x01, 0x00 => PORTB: 0x02, state: B1_Release"
+set state = B0_Release
 setPINA 0x00
 continue 1
 setPINA 0x01
@@ -72,6 +74,7 @@ checkResult
 
 #Test 2nd button press, no release
 test "PINA: 0x00, 0x01, 0x00, 0x01 => PORTB: 0x01, state: B0_Press"
+set state = B0_Release
 setPINA 0x00
 continue 1
 setPINA 0x01
@@ -86,6 +89,7 @@ checkResult
 
 #Test 2nd button press and release
 test "PINA: 0x00, 0x01, 0x00, 0x01 => PORTB: 0x01, state: B0_Release"
+set state = B0_Release
 setPINA 0x00
 continue 1
 setPINA 0x01
