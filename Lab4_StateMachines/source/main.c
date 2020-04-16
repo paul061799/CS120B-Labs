@@ -28,7 +28,7 @@ void Tick() {
         case B1_Release:
             state = (PINA == 0x01) ? B0_Press : B1_Release;
             break;
-        case B1_Press:
+        case B0_Press:
             state = (PINA == 0x01) ? B0_Press : B0_Release;
             break;
         default:
