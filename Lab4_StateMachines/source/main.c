@@ -51,7 +51,7 @@ void Tick() {
             PORTB = 0x01;
             break;
         default:
-            printf("State Action Error \n")
+            printf("State Action Error \n");
             break;
     }
 }
