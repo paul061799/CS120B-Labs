@@ -12,24 +12,83 @@
 #include "simAVRHeader.h"
 #endif
 
-enum States{Start, B0_Press, B0_Release, B1_Press, B1_Release} state;
+enum States{Start, Init, Press0_Release1, Press1_Release0, Press01, Reset} state;
+
+unsigned char count; //updated in transitions
 
 void Tick() {
     switch(state){
         case Start:
-            state = B0_Release;
+            count = 0x07;
+            state = Init;
             break;
-        case B0_Release:
-            state = (PINA == 0x01) ? B1_Press : B0_Release;
+        case Init:
+            if(PINA == 0x01){
+                state = Press0_Release1;
+                if(count < 0x09){
+                    count++;
+                }
+            } else if (PINA == 0x02) {
+                state = Press1_Release0;
+                if(count > 0x00){
+                    count--;
+                }
+            } else if (PINA == 0x03) {
+                state = Press01;
+            } else {
+                state = Init;
+            }
             break;
-        case B1_Press:
-            state = (PINA == 0x01) ? B1_Press : B1_Release;
+        case Press0_Release1:
+            if(PINA == 0x01){
+                state = Press0_Release1;
+            } else if (PINA == 0x02) {
+                state = Press1_Release0;
+                if(count > 0x00){
+                    count--;
+                }
+            } else if (PINA == 0x03) {
+                state = Press01;
+                if(count > 0x00){
+                    count--;
+                }
+            } else if (PINA == 0x00) {
+                state = Reset;
+                count = 0;
+            }
             break;
-        case B1_Release:
-            state = (PINA == 0x01) ? B0_Press : B1_Release;
+        case Press1_Release0:
+            if(PINA == 0x01){
+                state = Press0_Release1;
+                if(count < 0x09){
+                    count++;
+                }
+            } else if (PINA == 0x02) {
+                state = Press1_Release0;
+            } else if (PINA == 0x03) {
+                state = Press01;
+                if(count < 0x09){
+                    count++;
+                }
+            } else if (PINA == 0x00) {
+                state = Reset;
+                count = 0;
+            }
             break;
-        case B0_Press:
-            state = (PINA == 0x01) ? B0_Press : B0_Release;
+        case Press01:
+            if(PINA == 0x01){
+                state = Press0_Release1;
+            } else if (PINA == 0x02) {
+                state = Press1_Release0;
+            } else if (PINA == 0x03) {
+                state = Press01;
+            } else if (PINA == 0x00) {
+                state = Reset;
+                count = 0;
+            }
+            break;
+        case Reset:
+            state = Init;
             break;
         default:
             printf("State Transition Error\n");
@@ -38,17 +97,12 @@ void Tick() {
 
     switch(state){
         case Start:
-            break;
-        case B0_Release:
-            break;
-        case B0_Press:
-            PORTB = 0x01;
-            break;
-        case B1_Release:
-            break;
-        case B1_Press:
-            PORTB = 0x02;
-            break;
+        case Init:
+        case Press01:
+        case Press0_Release1:
+        case Press1_Release0:
+        case Reset:
+            PORTC = count; //only state action is to update PORTC with count's value
         default:
             printf("State Action Error \n");
             break;
@@ -58,10 +112,9 @@ void Tick() {
 int main(void) {
     /* Insert DDR and PORT initializations */
     DDRA = 0x00; PORTA = 0xFF;
-    DDRB = 0xFF; PORTB = 0x00;
+    DDRC = 0xFF; PORTC = 0x00;
     /* Insert your solution below */
     state = Start;
-    PORTB = 0x01;
     while (1) {
       Tick();
     }
