@@ -103,6 +103,7 @@ void Tick() {
         case Press1_Release0:
         case Reset:
             PORTC = count; //only state action is to update PORTC with count's value
+            break;
         default:
             printf("State Action Error \n");
             break;
