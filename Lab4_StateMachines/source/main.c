@@ -17,7 +17,7 @@ enum States{Start, Init, Press0_Release1, Press1_Release0, Press01, Reset} state
 unsigned char count = 0; //updated in transitions
 
 void Tick() {
-    switch(state){
+    switch(state){ //state transitions
         case Start:
             count = 0x07;
             state = Init;
@@ -31,7 +31,7 @@ void Tick() {
             } else if (PINA == 0x02) {
                 state = Press1_Release0;
                 if(count > 0x00){
-                    count = count - 0x01;
+                    count = count + 0xFF;
                 }
             } else if (PINA == 0x03) {
                 state = Press01;
@@ -45,12 +45,12 @@ void Tick() {
             } else if (PINA == 0x02) {
                 state = Press1_Release0;
                 if(count > 0x00){
-                    count = count - 0x01;
+                    count = count + 0xFF;
                 }
             } else if (PINA == 0x03) {
                 state = Press01;
                 if(count > 0x00){
-                    count = count - 0x01;
+                    count = count + 0xFF;
                 }
             } else if (PINA == 0x00) {
                 state = Reset;
@@ -93,7 +93,7 @@ void Tick() {
         default:
             printf("State Transition Error\n");
             break;
-    }
+    } //state transitions
 
     switch(state){
         case Start:
