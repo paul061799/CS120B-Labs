@@ -31,7 +31,7 @@ void Tick() {
             } else if (PINA == 0x02) {
                 state = Press1_Release0;
                 if(count > 0x00){
-                    count = count + 0xFF;
+                    count--;
                 }
             } else if (PINA == 0x03) {
                 state = Press01;
@@ -45,12 +45,12 @@ void Tick() {
             } else if (PINA == 0x02) {
                 state = Press1_Release0;
                 if(count > 0x00){
-                    count = count + 0xFF;
+                    count--;
                 }
             } else if (PINA == 0x03) {
                 state = Press01;
                 if(count > 0x00){
-                    count = count + 0xFF;
+                    count--;
                 }
             } else if (PINA == 0x00) {
                 state = Reset;
