@@ -12,34 +12,35 @@
 #include "simAVRHeader.h"
 #endif
 
-enum States{0, 1, 2, 3, 4} state;
+enum States{Start = 0, Lock = 1, Push1 = 2, Release1 = 3, Unlock = 4} state;
 
 unsigned char lock; //updated in transitions
+unsigned char state_num;
 
 void Tick() {
 
     switch(state){ //state transitions
-        case 0:
-            state = 1;
+        case Start:
+            state = Lock;
             lock = 0;
             break;
-        case 1:
-            if(PINA == 0x04){state = 2;}
-            else {state = 1;}
+        case Lock:
+            if(PINA == 0x04){state = Push1;}
+            else {state = Lock;}
             break;
-        case 2:
-            if(PINA == 0x00){state = 3;}
-            else if (PINA == 0x04) {state = 2;}
-            else {state = 0;}
+        case Push1:
+            if(PINA == 0x00){state = Release1;}
+            else if (PINA == 0x04) {state = Push1;}
+            else {state = Lock;}
             break;
-        case 3:
+        case Release1:
             if(PINA == 0x02){state = 4;}
-            else if (PINA == 0x00) {state = 3;}
-            else {state = 1;}
+            else if (PINA == 0x00) {state = Release1;}
+            else {state = Lock;}
             break;
-        case 4:
-            if(PINA == 0x07) {state = 1;}
-            else {state = 4;}
+        case Unlock:
+            if(PINA == 0x07) {state = Lock;}
+            else {state = Unlock;}
             break;
         default:
             printf("State Transition Error\n");
@@ -47,12 +48,12 @@ void Tick() {
     } //state transitions
 
     switch(state){
-        case 0:
-        case 1:
-        case 2:
-        case 3:
+        case Start:
+        case Lock:
+        case Push1:
+        case Release1:
           break;
-        case 4:
+        case Unlock:
             lock = 1;
             break;
         default:
@@ -64,7 +65,7 @@ void Tick() {
 }
 
 int main(void) {
-    /* Insert DDR and PORT initializations */
+    /* Insert DDR and PORT Lockializations */
     DDRA = 0x00; PORTA = 0xFF;
     DDRB = 0xFF; PORTB = 0x00;
     DDRC = 0xFF; PORTC = 0x00;
