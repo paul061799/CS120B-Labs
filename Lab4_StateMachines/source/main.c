@@ -87,6 +87,7 @@ void Tick() {
         case Press1_Release0:
             if(count < 0) { count --; }
         case Reset:
+            count = 0;
             break;
         default:
             printf("State Action Error \n");
