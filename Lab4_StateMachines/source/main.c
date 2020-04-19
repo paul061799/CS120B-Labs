@@ -44,7 +44,7 @@ void Tick() {
             break;
         case Unlock:
             if(PINA == 0x80) {state = Lock; lock = 0;}
-            else if (PINA == 0x04){state = Push1}
+            else if (PINA == 0x04){state = Push1;}
             else {state = Unlock;}
             break;
         default:
