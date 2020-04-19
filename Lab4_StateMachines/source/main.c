@@ -57,6 +57,7 @@ void Tick() {
         case Start:
         case Lock:
             lock = 0;
+            break;
         case Push1:
         case Release1:
           break;
