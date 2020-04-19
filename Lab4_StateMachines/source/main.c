@@ -14,24 +14,24 @@
 
 enum States{Start, Init, Press0_Release1, Press1_Release0, Press01, Reset} state;
 
-unsigned char count = 0; //updated in transitions
+//unsigned char count = 0; //updated in transitions
 
 void Tick() {
     switch(state){ //state transitions
         case Start:
-            count = 0x07;
+            PORTC = 0x07;
             state = Init;
             break;
         case Init:
             if(PINA == 0x01){
                 state = Press0_Release1;
-                if(count < 0x09){
-                    count++;
+                if(PORTC < 0x09){
+                    PORTC = PORTC + 0x01;
                 }
             } else if (PINA == 0x02) {
                 state = Press1_Release0;
-                if(count > 0x00){
-                    count--;
+                if(PORTC > 0x00){
+                    PORTC--;
                 }
             } else if (PINA == 0x03) {
                 state = Press01;
@@ -44,35 +44,35 @@ void Tick() {
                 state = Press0_Release1;
             } else if (PINA == 0x02) {
                 state = Press1_Release0;
-                if(count > 0x00){
-                    count--;
+                if(PORTC > 0x00){
+                    PORTC--;
                 }
             } else if (PINA == 0x03) {
                 state = Press01;
-                if(count > 0x00){
-                    count--;
+                if(PORTC > 0x00){
+                    PORTC--;
                 }
             } else if (PINA == 0x00) {
                 state = Reset;
-                count = 0;
+                PORTC = 0;
             }
             break;
         case Press1_Release0:
             if(PINA == 0x01){
                 state = Press0_Release1;
-                if(count < 0x09){
-                    count++;
+                if(PORTC < 0x09){
+                    PORTC++;
                 }
             } else if (PINA == 0x02) {
                 state = Press1_Release0;
             } else if (PINA == 0x03) {
                 state = Press01;
-                if(count < 0x09){
-                    count++;
+                if(PORTC < 0x09){
+                    PORTC++;
                 }
             } else if (PINA == 0x00) {
                 state = Reset;
-                count = 0;
+                PORTC = 0;
             }
             break;
         case Press01:
@@ -84,7 +84,7 @@ void Tick() {
                 state = Press01;
             } else if (PINA == 0x00) {
                 state = Reset;
-                count = 0;
+                PORTC = 0;
             }
             break;
         case Reset:
@@ -95,7 +95,7 @@ void Tick() {
             break;
     } //state transitions
 
-    switch(state){
+    /*switch(state){
         case Start:
         case Init:
         case Press01:
@@ -107,7 +107,7 @@ void Tick() {
         default:
             printf("State Action Error \n");
             break;
-    }
+    }*/
 }
 
 int main(void) {
