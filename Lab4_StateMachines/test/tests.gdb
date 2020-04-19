@@ -145,7 +145,7 @@ expect state Press1_Release0
 checkResult
 
 #Test A1A0 => Reset
-test "PINA: 0x00, 0x02, 0x03, 0x00 => PORTC: 0x00, state: Reset"
+test "PINA: 0x00, 0x02, 0x03, 0x00 => PORTC: 0x00, state: Init"
 setPINA 0x00
 continue 2
 setPINA 0x02
@@ -155,11 +155,11 @@ continue 2
 setPINA 0x00
 continue 2
 expectPORTC 0x00
-expect state Reset
+expect state Init
 checkResult
 
 #Test A0 => Reset
-test "PINA: 0x00, 0x01, 0x00 => PORTC: 0x00, state: Reset"
+test "PINA: 0x00, 0x01, 0x00 => PORTC: 0x00, state: Init"
 setPINA 0x00
 continue 2
 setPINA 0x01
@@ -167,11 +167,11 @@ continue 2
 setPINA 0x00
 continue 2
 expectPORTC 0x00
-expect state Reset
+expect state Init
 checkResult
 
 #Test A1 => Reset
-test "PINA: 0x00, 0x02, 0x00 => PORTC: 0x00, state: Reset"
+test "PINA: 0x00, 0x02, 0x00 => PORTC: 0x00, state: Init"
 setPINA 0x00
 continue 2
 setPINA 0x02
@@ -179,7 +179,7 @@ continue 2
 setPINA 0x00
 continue 2
 expectPORTC 0x00
-expect state Reset
+expect state Init
 checkResult
 # Report on how many tests passed/tests ran
 set $passed=$tests-$failed
