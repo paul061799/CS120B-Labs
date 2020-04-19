@@ -54,11 +54,9 @@ void Tick() {
 
     switch(state){
         case Init:
-            break;
         case Incr:
-            break;
         case Decr:
-            break;
+          break;
         case Reset:
             count = 0;
             break;
