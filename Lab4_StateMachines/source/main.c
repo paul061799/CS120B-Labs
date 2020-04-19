@@ -24,7 +24,7 @@ void Tick() {
             count = 0x07;
             break;
         case Init:
-            if(PINA == 0x02){count--; state = Decr;}
+            if(PINA == 0x02){count--; state = Decr;}//count-- doesn't execute
             else if (PINA == 0x01) {state = Incr; count++;}
             else if (PINA == 0x03) {state = Reset;}
             else {state = Init;}

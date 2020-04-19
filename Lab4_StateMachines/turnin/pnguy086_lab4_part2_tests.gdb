@@ -42,144 +42,99 @@ echo Running all tests..."\n\n
 #Test SM initialization
 test "PINA: 0x00 => PORTC: 0x07, state: Init"
 setPINA 0x00
-continue 1
+continue 2
 expectPORTC 0x07
 expect state Init
 checkResult
 
-#Test A0 Button Press
-test "PINA: 0x00, 0x01 => PORTC: 0x08, state: Press0_Release1"
+#Test Increment
+test "PINA: 0x00, 0x01 => PORTC: 0x08, state: Incr"
 setPINA 0x00
-continue 1
+continue 2
 setPINA 0x01
-continue 1
+continue 2
 expectPORTC 0x08
-expect state Press0_Release1
+expect state Incr
 checkResult
 
-#Test A1 Button Press
-test "PINA: 0x00, 0x02 => PORTC: 0x06, state: Press1_Release0"
+#Test Decrement
+test "PINA: 0x00, 0x02 => PORTC: 0x06, state: Decr"
 setPINA 0x00
-continue 1
+continue 2
 setPINA 0x02
-continue 1
+continue 2
 expectPORTC 0x06
-expect state Press1_Release0
+expect state Decr
 checkResult
 
-#Test A0 => A1
-test "PINA: 0x00, 0x01, 0x02 => PORTC: 0x07, state: Press1_Release0"
+#Test Incr -> Decr
+test "PINA: 0x00, 0x01, 0x02 => PORTC: 0x07, state: Decr"
 setPINA 0x00
-continue 1
+continue 2
 setPINA 0x01
-continue 1
+continue 2
 setPINA 0x02
-continue 1
+continue 2
 expectPORTC 0x07
-expect state Press1_Release0
+expect state Decr
 checkResult
 
-#Test A1 => A0
-test "PINA: 0x00, 0x02, 0x01 => PORTC: 0x07, state: Press0_Release1"
+#Test Decr -> Incr
+test "PINA: 0x00, 0x02, 0x01 => PORTC: 0x07, state: Incr"
 setPINA 0x00
-continue 1
+continue 2
 setPINA 0x02
-continue 1
+continue 2
 setPINA 0x01
-continue 1
-expectPORTC 0x06
-expect state Press0_Release1
-checkResult
-
-#Test A0 => A1A0
-test "PINA: 0x00, 0x01, 0x03 => PORTC: 0x07, state: Press01"
-setPINA 0x00
-continue 1
-setPINA 0x01
-continue 1
-setPINA 0x03
-continue 1
+continue 2
 expectPORTC 0x07
-expect state Press01
+expect state Incr
 checkResult
 
-#Test A1 => A1A0
-test "PINA: 0x00, 0x02, 0x03 => PORTC: 0x07, state: Press01"
+#Test Init -> Reset
+test "PINA: 0x00, 0x03 => PORTC: 0x00, state: Reset"
 setPINA 0x00
-continue 1
-setPINA 0x02
-continue 1
+continue 2
 setPINA 0x03
-continue 1
-setPINA 0x01
-expectPORTC 0x07
-expect state Press01
-checkResult
-
-#Test A1A0 => A0
-test "PINA: 0x00, 0x02, 0x03, 0x01 => PORTC: 0x07, state: Press0_Release1"
-setPINA 0x00
-continue 1
-setPINA 0x02
-continue 1
-setPINA 0x03
-continue 1
-setPINA 0x01
-continue 1
-expectPORTC 0x07
-expect state Press0_Release1
-checkResult
-
-#Test A1A0 => A1
-test "PINA: 0x00, 0x02, 0x03, 0x02 => PORTC: 0x07, state: Press1_Release0"
-setPINA 0x00
-continue 1
-setPINA 0x02
-continue 1
-setPINA 0x03
-continue 1
-setPINA 0x02
-continue 1
-expectPORTC 0x07
-expect state Press1_Release0
-checkResult
-
-#Test A1A0 => Reset
-test "PINA: 0x00, 0x02, 0x03, 0x00 => PORTC: 0x00, state: Reset"
-setPINA 0x00
-continue 1
-setPINA 0x02
-continue 1
-setPINA 0x03
-continue 1
-setPINA 0x00
-continue 1
+continue 2
 expectPORTC 0x00
 expect state Reset
 checkResult
 
-#Test A0 => Reset
-test "PINA: 0x00, 0x01, 0x00 => PORTC: 0x00, state: Reset"
+#Test Decr -> Reset
+test "PINA: 0x00, 0x02, 0x03 => PORTC: 0x00, state: Reset"
 setPINA 0x00
-continue 1
-setPINA 0x01
-continue 1
-setPINA 0x00
-continue 1
+continue 2
+setPINA 0x02
+continue 2
+setPINA 0x03
+continue 2
 expectPORTC 0x00
 expect state Reset
 checkResult
 
-#Test A1 => Reset
-test "PINA: 0x00, 0x02, 0x00 => PORTC: 0x00, state: Reset"
+#Test Incr -> Reset
+test "PINA: 0x00, 0x01, 0x03 => PORTC: 0x00, state: Reset"
 setPINA 0x00
-continue 1
-setPINA 0x02
-continue 1
-setPINA 0x00
-continue 1
+continue 2
+setPINA 0x01
+continue 2
+setPINA 0x03
+continue 2
 expectPORTC 0x00
 expect state Reset
+checkResult
+
+#Test Reset -> Init
+test "PINA: 0x00, 0x03, 0x00 => PORTC: 0x00, state: Init"
+setPINA 0x00
+continue 2
+setPINA 0x03
+continue 2
+setPINA 0x00
+continue 2
+expectPORTC 0x00
+expect state Init
 checkResult
 # Report on how many tests passed/tests ran
 set $passed=$tests-$failed

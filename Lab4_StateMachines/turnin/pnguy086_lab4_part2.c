@@ -12,65 +12,38 @@
 #include "simAVRHeader.h"
 #endif
 
-enum States{Start, Init, Press0_Release1, Press1_Release0, Press01, Reset} state;
+enum States{Start, Init, Incr, Decr, Reset} state;
 
-unsigned char count = 0; //updated in transitions
+unsigned char count; //updated in transitions
 
 void Tick() {
+
     switch(state){ //state transitions
         case Start:
-            count = 0x07;
             state = Init;
+            count = 0x07;
             break;
         case Init:
-            if(PINA == 0x01){
-                state = Press0_Release1;
-            } else if (PINA == 0x02) {
-                state = Press1_Release0;
-            } else if (PINA == 0x03) {
-                state = Press01;
-            } else {
-                state = Init;
-            }
+            if(PINA == 0x02){count--; state = Decr;}//count-- doesn't execute
+            else if (PINA == 0x01) {state = Incr; count++;}
+            else if (PINA == 0x03) {state = Reset;}
+            else {state = Init;}
             break;
-        case Press0_Release1:
-            if(PINA == 0x01){
-                state = Press0_Release1;
-            } else if (PINA == 0x02) {
-                state = Press1_Release0;
-            } else if (PINA == 0x03) {
-                state = Press01;
-            } else if (PINA == 0x00) {
-                state = Reset;
-            }
+        case Incr:
+            if(PINA == 0x01){state = Incr;}
+            else if (PINA == 0x02) {state = Decr;
+                                    if(count > 0) { count--; }}
+            else if (PINA == 0x03) {state = Reset;}
             break;
-        case Press1_Release0:
-            if(PINA == 0x01){
-                state = Press0_Release1;
-                if(PORTC < 0x09){
-                    PORTC++;
-                }
-            } else if (PINA == 0x02) {
-                state = Press1_Release0;
-            } else if (PINA == 0x03) {
-                state = Press01;
-            } else if (PINA == 0x00) {
-                state = Reset;
-            }
-            break;
-        case Press01:
-            if(PINA == 0x01){
-                state = Press0_Release1;
-            } else if (PINA == 0x02) {
-                state = Press1_Release0;
-            } else if (PINA == 0x03) {
-                state = Press01;
-            } else if (PINA == 0x00) {
-                state = Reset;
-            }
+        case Decr:
+            if(PINA == 0x01){state = Incr;
+                             if(count < 9) { count++; }}
+            else if (PINA == 0x02) {state = Decr;}
+            else if (PINA == 0x03) {state = Reset;}
             break;
         case Reset:
-            state = Init;
+            if(PINA != 0x03) {state = Init;}
+            else {state = Reset;}
             break;
         default:
             printf("State Transition Error\n");
@@ -78,15 +51,12 @@ void Tick() {
     } //state transitions
 
     switch(state){
-        case Start:
         case Init:
-        case Press01:
-            break;
-        case Press0_Release1:
-            if(count > 9) { count++; }
-        case Press1_Release0:
-            if(count < 0) { count --; }
+        case Incr:
+        case Decr:
+          break;
         case Reset:
+            count = 0;
             break;
         default:
             printf("State Action Error \n");
