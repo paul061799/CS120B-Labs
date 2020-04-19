@@ -40,102 +40,91 @@ echo Running all tests..."\n\n
 
 # Add tests below
 #Test SM initialization
-test "PINA: 0x00 => PORTC: 0x07, state: Init"
+test "PINA: 0x00 => PORTB: 0x00, PORTC: 0x00"
 setPINA 0x00
 continue 2
-expectPORTC 0x07
-expect state Init
+expectPORTB 0x00
+expectPORTC 0x00
 checkResult
 
-#Test Increment
-test "PINA: 0x00, 0x01 => PORTC: 0x08, state: Incr"
+#Test State 1
+test "PINA: 0x00, 0x04 => PORTB: 0x00, PORTC: 0x01"
+setPINA 0x00
+continue 2
+setPINA 0x04
+continue 2
+expectPORTB 0x00
+expectPORTC 0x01
+checkResult
+
+#Test Reset State 1
+test "PINA: 0x00, 0x04, 0x06 => PORTB: 0x00, PORTC: 0x00"
+setPINA 0x00
+continue 2
+setPINA 0x04
+continue 2
+setPINA 0x06
+continue 2
+expectPORTB 0x00
+expectPORTC 0x00
+checkResult
+
+#Test State 2
+test "PINA: 0x00, 0x04, 0x00 => PORTB: 0x00, PORTC: 0x02"
 setPINA 0x00
 continue 2
 setPINA 0x01
 continue 2
-expectPORTC 0x08
-expect state Incr
-checkResult
-
-#Test Decrement
-test "PINA: 0x00, 0x02 => PORTC: 0x06, state: Decr"
-setPINA 0x00
-continue 2
 setPINA 0x02
 continue 2
-expectPORTC 0x06
+expectPORTC 0x07
 expect state Decr
 checkResult
 
-#Test Incr -> Decr
-test "PINA: 0x00, 0x01, 0x02 => PORTC: 0x07, state: Decr"
+#Test Reset State 2
+test "PINA: 0x00, 0x04, 0x00, 0x01 => PORTB: 0x00, PORTC: 0x00"
+setPINA 0x00
+continue 2
+setPINA 0x04
+continue 2
 setPINA 0x00
 continue 2
 setPINA 0x01
 continue 2
-setPINA 0x02
-continue 2
-expectPORTC 0x07
-expect state Decr
-checkResult
-
-#Test Decr -> Incr
-test "PINA: 0x00, 0x02, 0x01 => PORTC: 0x07, state: Incr"
-setPINA 0x00
-continue 2
-setPINA 0x02
-continue 2
-setPINA 0x01
-continue 2
-expectPORTC 0x07
-expect state Incr
-checkResult
-
-#Test Init -> Reset
-test "PINA: 0x00, 0x03 => PORTC: 0x00, state: Reset"
-setPINA 0x00
-continue 2
-setPINA 0x03
-continue 2
+expectPORTB 0x00
 expectPORTC 0x00
-expect state Reset
 checkResult
 
-#Test Decr -> Reset
-test "PINA: 0x00, 0x02, 0x03 => PORTC: 0x00, state: Reset"
+#Test State 3
+test "PINA: 0x00, 0x04, 0x00, 0x02 => PORTB: 0x01, PORTC: 0x03"
+setPINA 0x00
+continue 2
+setPINA 0x04
+continue 2
 setPINA 0x00
 continue 2
 setPINA 0x02
 continue 2
-setPINA 0x03
-continue 2
-expectPORTC 0x00
-expect state Reset
+expectPORTB 0x01
+expectPORTC 0x03
 checkResult
 
-#Test Incr -> Reset
-test "PINA: 0x00, 0x01, 0x03 => PORTC: 0x00, state: Reset"
+#Test Inside Lock
+test "PINA: 0x00, 0x04, 0x00, 0x02, 0x80 => PORTB: 0x00, PORTC: 0x00"
 setPINA 0x00
 continue 2
-setPINA 0x01
+setPINA 0x04
 continue 2
-setPINA 0x03
+setPINA 0x00
 continue 2
+setPINA 0x02
+continue 2
+setPINA 0x80
+continue 2
+expectPORTB 0x00
 expectPORTC 0x00
-expect state Reset
 checkResult
 
-#Test Reset -> Init
-test "PINA: 0x00, 0x03, 0x00 => PORTC: 0x00, state: Init"
-setPINA 0x00
-continue 2
-setPINA 0x03
-continue 2
-setPINA 0x00
-continue 2
-expectPORTC 0x00
-expect state Init
-checkResult
 # Report on how many tests passed/tests ran
 set $passed=$tests-$failed
 eval "shell echo Passed %d/%d tests.\n",$passed,$tests

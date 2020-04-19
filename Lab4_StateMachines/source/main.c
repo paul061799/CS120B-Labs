@@ -12,38 +12,34 @@
 #include "simAVRHeader.h"
 #endif
 
-enum States{Start, Init, Incr, Decr, Reset} state;
+enum States{Start, 0, 1, 2, 3} state;
 
-unsigned char count; //updated in transitions
+unsigned char lock; //updated in transitions
 
 void Tick() {
 
     switch(state){ //state transitions
         case Start:
-            state = Init;
-            count = 0x07;
+            state = 0;
+            lock = 0;
             break;
-        case Init:
-            if(PINA == 0x02){count--; state = Decr;}//count-- doesn't execute
-            else if (PINA == 0x01) {state = Incr; count++;}
-            else if (PINA == 0x03) {state = Reset;}
-            else {state = Init;}
+        case 0:
+            if(PINA == 0x04){state = 1}
+            else {state = 0;}
             break;
-        case Incr:
-            if(PINA == 0x01){state = Incr;}
-            else if (PINA == 0x02) {state = Decr;
-                                    if(count > 0) { count--; }}
-            else if (PINA == 0x03) {state = Reset;}
+        case 1:
+            if(PINA == 0x00){state = 2;}
+            else if (PINA == 0x04) {state = 1;}
+            else {state = 0;}
             break;
-        case Decr:
-            if(PINA == 0x01){state = Incr;
-                             if(count < 9) { count++; }}
-            else if (PINA == 0x02) {state = Decr;}
-            else if (PINA == 0x03) {state = Reset;}
+        case 2:
+            if(PINA == 0x02){state = 3;}
+            else if (PINA == 0x00) {state = 2;}
+            else {state = 0;}
             break;
-        case Reset:
-            if(PINA != 0x03) {state = Init;}
-            else {state = Reset;}
+        case 3:
+            if(PINA == 0x07) {state = 0;}
+            else {state = 3;}
             break;
         default:
             printf("State Transition Error\n");
@@ -51,24 +47,25 @@ void Tick() {
     } //state transitions
 
     switch(state){
-        case Init:
-        case Incr:
-        case Decr:
+        case 0:
+        case 1:
+        case 2:
           break;
-        case Reset:
-            count = 0;
+        case 3:
+            lock = 1;
             break;
         default:
             printf("State Action Error \n");
             break;
     }
-
-    PORTC = count;
+    PORTB = lock;
+    PORTC = state;
 }
 
 int main(void) {
     /* Insert DDR and PORT initializations */
     DDRA = 0x00; PORTA = 0xFF;
+    DDRB = 0xFF; PORTB = 0x00;
     DDRC = 0xFF; PORTC = 0x00;
     /* Insert your solution below */
     state = Start;
