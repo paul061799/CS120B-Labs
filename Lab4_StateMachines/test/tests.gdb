@@ -175,12 +175,12 @@ setPINA 0x02
 continue 2
 setPINA 0x04
 continue 2
-setPINA 0x00
-continue 2
-setPINA 0x00
-continue 2
+#setPINA 0x00
+#continue 2
+#setPINA 0x00
+#continue 2
 expectPORTB 0x01
-expectPORTC 0x03
+expectPORTC 0x02
 checkResult
 # Report on how many tests passed/tests ran
 set $passed=$tests-$failed
