@@ -145,7 +145,7 @@ expect state Press1_Release0
 checkResult
 
 #Test A1A0 => Reset
-test "PINA: 0x00, 0x02, 0x03, 0x00 => PORTC: 0x00, state: Init"
+test "PINA: 0x00, 0x02, 0x03, 0x00 => PORTC: 0x00, state: Reset"
 setPINA 0x00
 continue 1
 setPINA 0x02
@@ -155,11 +155,11 @@ continue 1
 setPINA 0x00
 continue 1
 expectPORTC 0x00
-expect state Init
+expect state Reset
 checkResult
 
 #Test A0 => Reset
-test "PINA: 0x00, 0x01, 0x00 => PORTC: 0x00, state: Init"
+test "PINA: 0x00, 0x01, 0x00 => PORTC: 0x00, state: Reset"
 setPINA 0x00
 continue 1
 setPINA 0x01
@@ -171,7 +171,7 @@ expect state Reset
 checkResult
 
 #Test A1 => Reset
-test "PINA: 0x00, 0x02, 0x00 => PORTC: 0x00, state: Init"
+test "PINA: 0x00, 0x02, 0x00 => PORTC: 0x00, state: Reset"
 setPINA 0x00
 continue 1
 setPINA 0x02
