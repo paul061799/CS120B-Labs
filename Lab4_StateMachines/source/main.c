@@ -14,7 +14,7 @@
 
 enum States{Start, Init, Press0_Release1, Press1_Release0, Press01, Reset} state;
 
-unsigned char count = 0; //updated in transitions
+unsigned char count; //updated in transitions
 
 void Tick() {
     switch(state){ //state transitions
