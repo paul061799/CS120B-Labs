@@ -20,8 +20,8 @@ void Tick() {
     unsigned char count; //updated in transitions
     switch(state){ //state transitions
         case Start:
-            count = 0x07;
             state = Init;
+            count = 0x07;
             break;
         case Init:
             if(PINA == 0x01){state = Incr;}
@@ -49,7 +49,6 @@ void Tick() {
     } //state transitions
 
     switch(state){
-        case Start:
         case Init:
             break;
         case Incr:
