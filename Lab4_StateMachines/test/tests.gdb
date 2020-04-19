@@ -47,7 +47,7 @@ expectPORTC 0x07
 expect state Init
 checkResult
 
-#Test A0 Button Press
+#Test Increment
 test "PINA: 0x00, 0x01 => PORTC: 0x08, state: Incr"
 setPINA 0x00
 continue 2
@@ -57,7 +57,7 @@ expectPORTC 0x08
 expect state Incr
 checkResult
 
-#Test A1 Button Press
+#Test Decrement
 test "PINA: 0x00, 0x02 => PORTC: 0x06, state: Decr"
 setPINA 0x00
 continue 2
@@ -67,7 +67,7 @@ expectPORTC 0x06
 expect state Decr
 checkResult
 
-#Test A0 => A1
+#Test Incr -> Decr
 test "PINA: 0x00, 0x01, 0x02 => PORTC: 0x07, state: Decr"
 setPINA 0x00
 continue 2
@@ -79,7 +79,7 @@ expectPORTC 0x07
 expect state Decr
 checkResult
 
-#Test A1 => A0
+#Test Decr -> Incr
 test "PINA: 0x00, 0x02, 0x01 => PORTC: 0x07, state: Incr"
 setPINA 0x00
 continue 2
@@ -87,94 +87,49 @@ setPINA 0x02
 continue 2
 setPINA 0x01
 continue 2
-expectPORTC 0x06
-expect state Incr
-checkResult
-
-#Test A0 => A1A0
-test "PINA: 0x00, 0x01, 0x03 => PORTC: 0x07, state: Press01"
-setPINA 0x00
-continue 2
-setPINA 0x01
-continue 2
-setPINA 0x03
-continue 2
-expectPORTC 0x07
-expect state Press01
-checkResult
-
-#Test A1 => A1A0
-test "PINA: 0x00, 0x02, 0x03 => PORTC: 0x07, state: Press01"
-setPINA 0x00
-continue 2
-setPINA 0x02
-continue 2
-setPINA 0x03
-continue 2
-setPINA 0x01
-expectPORTC 0x07
-expect state Press01
-checkResult
-
-#Test A1A0 => A0
-test "PINA: 0x00, 0x02, 0x03, 0x01 => PORTC: 0x07, state: Incr"
-setPINA 0x00
-continue 2
-setPINA 0x02
-continue 2
-setPINA 0x03
-continue 2
-setPINA 0x01
-continue 2
 expectPORTC 0x07
 expect state Incr
 checkResult
 
-#Test A1A0 => A1
-test "PINA: 0x00, 0x02, 0x03, 0x02 => PORTC: 0x07, state: Decr"
+#Test Init -> Reset
+test "PINA: 0x00, 0x03 => PORTC: 0x00, state: Reset"
 setPINA 0x00
-continue 2
-setPINA 0x02
 continue 2
 setPINA 0x03
-continue 2
-setPINA 0x02
-continue 2
-expectPORTC 0x07
-expect state Decr
-checkResult
-
-#Test A1A0 => Reset
-test "PINA: 0x00, 0x02, 0x03, 0x00 => PORTC: 0x00, state: Init"
-setPINA 0x00
-continue 2
-setPINA 0x02
-continue 2
-setPINA 0x03
-continue 2
-setPINA 0x00
 continue 2
 expectPORTC 0x00
-expect state Init
+expect state Reset
 checkResult
 
-#Test A0 => Reset
-test "PINA: 0x00, 0x01, 0x00 => PORTC: 0x00, state: Init"
+#Test Decr -> Reset
+test "PINA: 0x00, 0x02, 0x03 => PORTC: 0x00, state: Reset"
+setPINA 0x00
+continue 2
+setPINA 0x02
+continue 2
+setPINA 0x03
+continue 2
+expectPORTC 0x00
+expect state Reset
+checkResult
+
+#Test Incr -> Reset
+test "PINA: 0x00, 0x01, 0x03 => PORTC: 0x00, state: Reset"
 setPINA 0x00
 continue 2
 setPINA 0x01
 continue 2
-setPINA 0x00
+setPINA 0x03
 continue 2
 expectPORTC 0x00
-expect state Init
+expect state Reset
 checkResult
 
-#Test A1 => Reset
-test "PINA: 0x00, 0x02, 0x00 => PORTC: 0x00, state: Init"
+#Test Reset -> Init
+test "PINA: 0x00, 0x03, 0x00 => PORTC: 0x00, state: Init"
 setPINA 0x00
 continue 2
-setPINA 0x02
+setPINA 0x03
 continue 2
 setPINA 0x00
 continue 2

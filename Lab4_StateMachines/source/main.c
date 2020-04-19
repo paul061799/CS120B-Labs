@@ -12,7 +12,7 @@
 #include "simAVRHeader.h"
 #endif
 
-enum States{Start, Init, Incr, Decr, Press01, Reset} state;
+enum States{Start, Init, Incr, Decr, Reset} state;
 
 
 
@@ -24,54 +24,24 @@ void Tick() {
             state = Init;
             break;
         case Init:
-            if(PINA == 0x01){
-                state = Incr;
-            } else if (PINA == 0x02) {
-                state = Decr;
-            } else if (PINA == 0x03) {
-                state = Press01;
-            } else {
-                state = Init;
-            }
+            if(PINA == 0x01){state = Incr;}
+            else if (PINA == 0x02) {state = Decr;}
+            else if (PINA == 0x03) {state = Reset;}
+            else {state = Init;}
             break;
         case Incr:
-            if(PINA == 0x01){
-                state = Incr;
-            } else if (PINA == 0x02) {
-                state = Decr;
-            } else if (PINA == 0x03) {
-                state = Press01;
-            } else if (PINA == 0x00) {
-                state = Reset;
-            }
+            if(PINA == 0x01){state = Incr;}
+            else if (PINA == 0x02) {state = Decr;}
+            else if (PINA == 0x03) {state = Reset;}
             break;
         case Decr:
-            if(PINA == 0x01){
-                state = Incr;
-                if(PORTC < 0x09){
-                    PORTC++;
-                }
-            } else if (PINA == 0x02) {
-                state = Decr;
-            } else if (PINA == 0x03) {
-                state = Press01;
-            } else if (PINA == 0x00) {
-                state = Reset;
-            }
-            break;
-        case Press01:
-            if(PINA == 0x01){
-                state = Incr;
-            } else if (PINA == 0x02) {
-                state = Decr;
-            } else if (PINA == 0x03) {
-                state = Press01;
-            } else if (PINA == 0x00) {
-                state = Reset;
-            }
+            if(PINA == 0x01){state = Incr;}
+            else if (PINA == 0x02) {state = Decr;}
+            else if (PINA == 0x03) {state = Reset;}
             break;
         case Reset:
-            state = Init;
+            if(PINA != 0x03) {state = Init;}
+            else {state = Reset;}
             break;
         default:
             printf("State Transition Error\n");
@@ -81,7 +51,6 @@ void Tick() {
     switch(state){
         case Start:
         case Init:
-        case Press01:
             break;
         case Incr:
             if(count > 9) { count++; }
