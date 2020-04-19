@@ -110,7 +110,7 @@ expectPORTC 0x04
 checkResult
 
 #Test Inside Lock
-test "PINA: 0x00, 0x04, 0x00, 0x02, 0x80 => PORTB: 0x00, PORTC: 0x00"
+test "PINA: 0x00, 0x04, 0x00, 0x02, 0x80 => PORTB: 0x00, PORTC: 0x01"
 setPINA 0x00
 continue 2
 setPINA 0x04
@@ -125,6 +125,63 @@ expectPORTB 0x00
 expectPORTC 0x01
 checkResult
 
+#Test Lock Combination
+test "PINA: 0x00, 0x04, 0x00, 0x02, 0x04, 0x00, 0x02 => PORTB: 0x00, PORTC: 0x01"
+setPINA 0x00
+continue 2
+setPINA 0x04
+continue 2
+setPINA 0x00
+continue 2
+setPINA 0x02
+continue 2
+setPINA 0x04
+continue 2
+setPINA 0x00
+continue 2
+setPINA 0x02
+continue 2
+expectPORTB 0x00
+expectPORTC 0x01
+checkResult
+
+#Test Lock Combo Reset 1
+test "PINA: 0x00, 0x04, 0x00, 0x02, 0x04, 0x01 => PORTB: 0x01, PORTC: 0x04"
+setPINA 0x00
+continue 2
+setPINA 0x04
+continue 2
+setPINA 0x00
+continue 2
+setPINA 0x02
+continue 2
+setPINA 0x04
+continue 2
+setPINA 0x01
+continue 2
+expectPORTB 0x01
+expectPORTC 0x04
+checkResult
+
+#Test Lock Combo Reset 2
+test "PINA: 0x00, 0x04, 0x00, 0x02, 0x04, 0x00, 0x01 => PORTB: 0x01, PORTC: 0x04"
+setPINA 0x00
+continue 2
+setPINA 0x04
+continue 2
+setPINA 0x00
+continue 2
+setPINA 0x02
+continue 2
+setPINA 0x04
+continue 2
+setPINA 0x00
+continue 2
+setPINA 0x01
+continue 2
+expectPORTB 0x01
+expectPORTC 0x04
+checkResult
 # Report on how many tests passed/tests ran
 set $passed=$tests-$failed
 eval "shell echo Passed %d/%d tests.\n",$passed,$tests
