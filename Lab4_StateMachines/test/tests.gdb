@@ -92,7 +92,7 @@ continue 2
 setPINA 0x01
 continue 2
 expectPORTB 0x00
-expectPORTC 0x00
+expectPORTC 0x01
 checkResult
 
 #Test State 4
