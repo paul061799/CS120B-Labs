@@ -38,7 +38,7 @@ void Tick() {
                              else{state = Unlock; lock = 1;}}
             else if (PINA == 0x00) {state = Release1;}
             else {
-                if (lock) {state = Lock;}
+                if (!lock) {state = Lock;}
                 else {state = Unlock;}
             }
             break;
