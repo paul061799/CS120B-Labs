@@ -84,8 +84,10 @@ void Tick() {
             break;
         case Press0_Release1:
             if(count > 9) { count++; }
+            break;
         case Press1_Release0:
             if(count < 0) { count --; }
+            break;
         case Reset:
             count = 0;
             break;
