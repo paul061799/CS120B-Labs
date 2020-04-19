@@ -39,7 +39,7 @@ void Tick() {
             else {state = Lock;}
             break;
         case Unlock:
-            if(PINA == 0x80) {state = Lock;}
+            if(PINA == 0x80) {state = Lock; lock = 0;}
             else {state = Unlock;}
             break;
         default:
