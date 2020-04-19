@@ -12,11 +12,12 @@
 #include "simAVRHeader.h"
 #endif
 
-enum States{Start, Init, Press0_Release1, Press1_Release0, Press01, Reset} state;
+enum States{Start, Init, Incr, Decr, Press01, Reset} state;
 
-unsigned char count; //updated in transitions
+
 
 void Tick() {
+    unsigned char count; //updated in transitions
     switch(state){ //state transitions
         case Start:
             count = 0x07;
@@ -24,34 +25,34 @@ void Tick() {
             break;
         case Init:
             if(PINA == 0x01){
-                state = Press0_Release1;
+                state = Incr;
             } else if (PINA == 0x02) {
-                state = Press1_Release0;
+                state = Decr;
             } else if (PINA == 0x03) {
                 state = Press01;
             } else {
                 state = Init;
             }
             break;
-        case Press0_Release1:
+        case Incr:
             if(PINA == 0x01){
-                state = Press0_Release1;
+                state = Incr;
             } else if (PINA == 0x02) {
-                state = Press1_Release0;
+                state = Decr;
             } else if (PINA == 0x03) {
                 state = Press01;
             } else if (PINA == 0x00) {
                 state = Reset;
             }
             break;
-        case Press1_Release0:
+        case Decr:
             if(PINA == 0x01){
-                state = Press0_Release1;
+                state = Incr;
                 if(PORTC < 0x09){
                     PORTC++;
                 }
             } else if (PINA == 0x02) {
-                state = Press1_Release0;
+                state = Decr;
             } else if (PINA == 0x03) {
                 state = Press01;
             } else if (PINA == 0x00) {
@@ -60,9 +61,9 @@ void Tick() {
             break;
         case Press01:
             if(PINA == 0x01){
-                state = Press0_Release1;
+                state = Incr;
             } else if (PINA == 0x02) {
-                state = Press1_Release0;
+                state = Decr;
             } else if (PINA == 0x03) {
                 state = Press01;
             } else if (PINA == 0x00) {
@@ -82,11 +83,11 @@ void Tick() {
         case Init:
         case Press01:
             break;
-        case Press0_Release1:
+        case Incr:
             if(count > 9) { count++; }
             break;
-        case Press1_Release0:
-            if(count < 0) { count --; }
+        case Decr:
+            if(count < 0) { count--; }
             break;
         case Reset:
             count = 0;
