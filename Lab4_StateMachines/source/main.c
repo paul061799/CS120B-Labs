@@ -12,34 +12,34 @@
 #include "simAVRHeader.h"
 #endif
 
-enum States{Start, 0, 1, 2, 3} state;
+enum States{0, 1, 2, 3, 4} state;
 
 unsigned char lock; //updated in transitions
 
 void Tick() {
 
     switch(state){ //state transitions
-        case Start:
-            state = 0;
+        case 0:
+            state = 1;
             lock = 0;
             break;
-        case 0:
-            if(PINA == 0x04){state = 1}
-            else {state = 0;}
-            break;
         case 1:
-            if(PINA == 0x00){state = 2;}
-            else if (PINA == 0x04) {state = 1;}
-            else {state = 0;}
+            if(PINA == 0x04){state = 2;}
+            else {state = 1;}
             break;
         case 2:
-            if(PINA == 0x02){state = 3;}
-            else if (PINA == 0x00) {state = 2;}
+            if(PINA == 0x00){state = 3;}
+            else if (PINA == 0x04) {state = 2;}
             else {state = 0;}
             break;
         case 3:
-            if(PINA == 0x07) {state = 0;}
-            else {state = 3;}
+            if(PINA == 0x02){state = 4;}
+            else if (PINA == 0x00) {state = 3;}
+            else {state = 1;}
+            break;
+        case 4:
+            if(PINA == 0x07) {state = 1;}
+            else {state = 4;}
             break;
         default:
             printf("State Transition Error\n");
@@ -50,8 +50,9 @@ void Tick() {
         case 0:
         case 1:
         case 2:
-          break;
         case 3:
+          break;
+        case 4:
             lock = 1;
             break;
         default:

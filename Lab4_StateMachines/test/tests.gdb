@@ -40,25 +40,25 @@ echo Running all tests..."\n\n
 
 # Add tests below
 #Test SM initialization
-test "PINA: 0x00 => PORTB: 0x00, PORTC: 0x00"
+test "PINA: 0x00 => PORTB: 0x00, PORTC: 0x01"
 setPINA 0x00
-continue 2
-expectPORTB 0x00
-expectPORTC 0x00
-checkResult
-
-#Test State 1
-test "PINA: 0x00, 0x04 => PORTB: 0x00, PORTC: 0x01"
-setPINA 0x00
-continue 2
-setPINA 0x04
 continue 2
 expectPORTB 0x00
 expectPORTC 0x01
 checkResult
 
-#Test Reset State 1
-test "PINA: 0x00, 0x04, 0x06 => PORTB: 0x00, PORTC: 0x00"
+#Test State 2
+test "PINA: 0x00, 0x04 => PORTB: 0x00, PORTC: 0x02"
+setPINA 0x00
+continue 2
+setPINA 0x04
+continue 2
+expectPORTB 0x00
+expectPORTC 0x02
+checkResult
+
+#Test Reset State 2
+test "PINA: 0x00, 0x04, 0x06 => PORTB: 0x00, PORTC: 0x01"
 setPINA 0x00
 continue 2
 setPINA 0x04
@@ -66,22 +66,22 @@ continue 2
 setPINA 0x06
 continue 2
 expectPORTB 0x00
-expectPORTC 0x00
+expectPORTC 0x01
 checkResult
 
-#Test State 2
-test "PINA: 0x00, 0x04, 0x00 => PORTB: 0x00, PORTC: 0x02"
+#Test State 3
+test "PINA: 0x00, 0x04, 0x00 => PORTB: 0x00, PORTC: 0x03"
 setPINA 0x00
 continue 2
 setPINA 0x01
 continue 2
 setPINA 0x02
 continue 2
-expectPORTC 0x07
-expect state Decr
+expectPORTB 0x00
+expectPORTC 0x03
 checkResult
 
-#Test Reset State 2
+#Test Reset State 3
 test "PINA: 0x00, 0x04, 0x00, 0x01 => PORTB: 0x00, PORTC: 0x00"
 setPINA 0x00
 continue 2
@@ -95,8 +95,8 @@ expectPORTB 0x00
 expectPORTC 0x00
 checkResult
 
-#Test State 3
-test "PINA: 0x00, 0x04, 0x00, 0x02 => PORTB: 0x01, PORTC: 0x03"
+#Test State 4
+test "PINA: 0x00, 0x04, 0x00, 0x02 => PORTB: 0x01, PORTC: 0x04"
 setPINA 0x00
 continue 2
 setPINA 0x04
@@ -106,7 +106,7 @@ continue 2
 setPINA 0x02
 continue 2
 expectPORTB 0x01
-expectPORTC 0x03
+expectPORTC 0x04
 checkResult
 
 #Test Inside Lock
