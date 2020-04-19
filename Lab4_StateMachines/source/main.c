@@ -14,10 +14,10 @@
 
 enum States{Start, Init, Incr, Decr, Reset} state;
 
-
+unsigned char count; //updated in transitions
 
 void Tick() {
-    unsigned char count; //updated in transitions
+
     switch(state){ //state transitions
         case Start:
             state = Init;
