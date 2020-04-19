@@ -50,7 +50,6 @@ void Tick() {
 
     switch(state){
         case Init:
-            count = 0x07;
             break;
         case Incr:
             if(count < 9) { count++; }
