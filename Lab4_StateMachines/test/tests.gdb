@@ -167,7 +167,7 @@ continue 1
 setPINA 0x00
 continue 1
 expectPORTC 0x00
-expect state Init
+expect state Reset
 checkResult
 
 #Test A1 => Reset
@@ -179,7 +179,7 @@ continue 1
 setPINA 0x00
 continue 1
 expectPORTC 0x00
-expect state Init
+expect state Reset
 checkResult
 # Report on how many tests passed/tests ran
 set $passed=$tests-$failed
