@@ -15,7 +15,6 @@
 enum States{Start = 0, Lock = 1, Push1 = 2, Release1 = 3, Unlock = 4} state;
 
 unsigned char lock; //updated in transitions
-unsigned char state_num;
 
 void Tick() {
 
@@ -35,8 +34,8 @@ void Tick() {
                   else {state = Unlock;}}
             break;
         case Release1:
-            if(PINA == 0x02){if(lock){state = Lock;}
-                             else{state = Unlock;}}
+            if(PINA == 0x02){if(lock){state = Lock; lock = 0;}
+                             else{state = Unlock; lock = 1;}}
             else if (PINA == 0x00) {state = Release1;}
             else {
                 if (!lock) {state = Lock;}
@@ -56,13 +55,10 @@ void Tick() {
     switch(state){
         case Start:
         case Lock:
-            lock = 0;
-            break;
         case Push1:
         case Release1:
           break;
         case Unlock:
-            lock = 1;
             break;
         default:
             printf("State Action Error \n");
