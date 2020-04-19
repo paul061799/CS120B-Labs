@@ -31,15 +31,20 @@ void Tick() {
         case Push1:
             if(PINA == 0x00){state = Release1;}
             else if (PINA == 0x04) {state = Push1;}
-            else {state = Lock;}
+            else {if (!lock) {state = Lock;}
+                  else {state = Unlock;}}
             break;
         case Release1:
-            if(PINA == 0x02){state = 4;}
+            if(PINA == 0x02){lock = !lock;
+                             if(lock){state = Unlock;}
+                             else{state = Lock;}}
             else if (PINA == 0x00) {state = Release1;}
-            else {state = Lock;}
+            else {if (!lock) {state = Lock;}
+                  else {state = Unlock;}}
             break;
         case Unlock:
             if(PINA == 0x80) {state = Lock; lock = 0;}
+            else if (PINA == 0x04){state = Push1}
             else {state = Unlock;}
             break;
         default:
@@ -54,7 +59,6 @@ void Tick() {
         case Release1:
           break;
         case Unlock:
-            lock = 1;
             break;
         default:
             printf("State Action Error \n");
