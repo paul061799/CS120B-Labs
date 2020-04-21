@@ -63,12 +63,12 @@ continue 5
 expectPORTD 0x8F
 check result
 
-test "PINA: 0x55, PINB: 0x02, PINC: 0x03 => PORTD: 0x5A"
+test "PINA: 0x55, PINB: 0x02, PINC: 0x03 => PORTD: 0x4E"
 setPINA 0x55
-setPINB 0x02
-setPINC 0x03
+setPINB 0x37
+setPINC 0x01
 continue 5
-expectPORTD 0x5A
+expectPORTD 0x8F
 check result
 # Report on how many tests passed/tests ran
 set $passed=$tests-$failed

@@ -24,13 +24,13 @@ void Tick() {
             count = 0x07;
             break;
         case Init:
-            if(PINA == 0x02){count--; state = Decr;}//count-- doesn't execute
-            else if (PINA == 0x01) {state = Incr; count++;}
+            if(PINA == 0x02){if(count > 10){count--;} state = Decr;}//count-- doesn't execute
+            else if (PINA == 0x01) {state = Incr; if(count < 9){count++;}}
             else if (PINA == 0x03) {state = Reset;}
             else {state = Init;}
             break;
         case Incr:
-            if(PINA == 0x01){state = Incr;}
+            if(PINA == 0x01){state = Incr; if (count < 9){count++;}}
             else if (PINA == 0x02) {state = Decr;
                                     if(count > 0) { count--; }}
             else if (PINA == 0x03) {state = Reset;}
@@ -38,7 +38,7 @@ void Tick() {
         case Decr:
             if(PINA == 0x01){state = Incr;
                              if(count < 9) { count++; }}
-            else if (PINA == 0x02) {state = Decr;}
+            else if (PINA == 0x02) {state = Decr; if (count > 0){count--;}}
             else if (PINA == 0x03) {state = Reset;}
             break;
         case Reset:

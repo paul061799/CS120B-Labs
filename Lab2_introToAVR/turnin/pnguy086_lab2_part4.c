@@ -22,8 +22,8 @@
    unsigned char tmpB = 0x00; // Temporary variable to hold the value of B
    unsigned char tmpC = 0x00; // Temporary variable to hold the value of C
    unsigned char tmpD = 0x00;
-   unsigned char totalWeight = 0x00;
-   unsigned char diffAC = 0x00;
+   unsigned long totalWeight = 0x00;
+   unsigned short diffAC = 0x00;
    while(1) {
  		   // 1) Read input
  		   tmpA = PINA;
@@ -43,7 +43,7 @@
           tmpD = tmpD | 0x01;
         }
         //PD1
-        if(diffAC > 80){
+        if(diffAC >= 80){
           tmpD = tmpD | 0x02;
         }
 

@@ -23,10 +23,11 @@ int main(void) {
         tmpB = PINB & 0x01;
         weight = (PIND << 1) | tmpB;
 
+        tmpB = tmpB & 0x00;
         if(weight >= 70){
-          tmpB = tmpB | 0x04;
-        } else if(weight > 5) {
           tmpB = tmpB | 0x02;
+        } else if(weight > 5) {
+          tmpB = tmpB | 0x04;
         }
         PORTB = tmpB;
     }
