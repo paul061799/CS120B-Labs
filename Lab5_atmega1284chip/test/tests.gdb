@@ -40,6 +40,11 @@ echo Running all tests..."\n\n
 
 # Add tests below
 
+test "PINB: 0x0F"
+continue 2
+expectPORTB 0x0F
+checkResult
+
 # Report on how many tests passed/tests ran
 set $passed=$tests-$failed
 eval "shell echo Passed %d/%d tests.\n",$passed,$tests
