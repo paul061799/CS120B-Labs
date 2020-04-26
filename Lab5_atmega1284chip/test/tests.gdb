@@ -1,4 +1,4 @@
-# Test file for "Lab5_atmega1284chip"
+# Test file for "Lab4_StateMachines"
 
 
 # commands.gdb provides the following functions for ease:
@@ -39,102 +39,103 @@ echo Running all tests..."\n\n
 #checkResult
 
 # Add tests below
-test "PINA: 0x00 => PORTC: 0x40"
+#Test SM initialization
+test "PINA: 0x00 => PORTC: 0x07, state: Init"
 setPINA 0x00
-continue 5
-expectPORTC 0x40
+continue 2
+expectPORTC 0x07
+expect state Init
 checkResult
 
-test "PINA: 0x01 => PORTC: 0x60"
+#Test Increment
+test "PINA: 0x00, 0x01 => PORTC: 0x08, state: Incr"
+setPINA 0x00
+continue 2
 setPINA 0x01
-continue 5
-expectPORTC 0x60
+continue 2
+expectPORTC 0x08
+expect state Incr
 checkResult
 
-test "PINA: 0x02 => PORTC: 0x60"
+#Test Decrement
+test "PINA: 0x00, 0x02 => PORTC: 0x06, state: Decr"
+setPINA 0x00
+continue 2
 setPINA 0x02
-continue 5
-expectPORTC 0x60
+continue 2
+expectPORTC 0x06
+expect state Decr
 checkResult
 
-test "PINA: 0x03 => PORTC: 0x70"
+#Test Incr -> Decr
+test "PINA: 0x00, 0x01, 0x02 => PORTC: 0x07, state: Decr"
+setPINA 0x00
+continue 2
+setPINA 0x01
+continue 2
+setPINA 0x02
+continue 2
+expectPORTC 0x07
+expect state Decr
+checkResult
+
+#Test Decr -> Incr
+test "PINA: 0x00, 0x02, 0x01 => PORTC: 0x07, state: Incr"
+setPINA 0x00
+continue 2
+setPINA 0x02
+continue 2
+setPINA 0x01
+continue 2
+expectPORTC 0x07
+expect state Incr
+checkResult
+
+#Test Init -> Reset
+test "PINA: 0x00, 0x03 => PORTC: 0x00, state: Reset"
+setPINA 0x00
+continue 2
 setPINA 0x03
-continue 5
-expectPORTC 0x70
+continue 2
+expectPORTC 0x00
+expect state Reset
 checkResult
 
-test "PINA: 0x04 => PORTC: 0x70"
-setPINA 0x04
-continue 5
-expectPORTC 0x70
+#Test Decr -> Reset
+test "PINA: 0x00, 0x02, 0x03 => PORTC: 0x00, state: Reset"
+setPINA 0x00
+continue 2
+setPINA 0x02
+continue 2
+setPINA 0x03
+continue 2
+expectPORTC 0x00
+expect state Reset
 checkResult
 
-test "PINA: 0x05 => PORTC: 0x38"
-setPINA 0x05
-continue 5
-expectPORTC 0x38
+#Test Incr -> Reset
+test "PINA: 0x00, 0x01, 0x03 => PORTC: 0x00, state: Reset"
+setPINA 0x00
+continue 2
+setPINA 0x01
+continue 2
+setPINA 0x03
+continue 2
+expectPORTC 0x00
+expect state Reset
 checkResult
 
-test "PINA: 0x06 => PORTC: 0x38"
-setPINA 0x06
-continue 5
-expectPORTC 0x38
+#Test Reset -> Init
+test "PINA: 0x00, 0x03, 0x00 => PORTC: 0x00, state: Init"
+setPINA 0x00
+continue 2
+setPINA 0x03
+continue 2
+setPINA 0x00
+continue 2
+expectPORTC 0x00
+expect state Init
 checkResult
-
-test "PINA: 0x07 => PORTC: 0x3C"
-setPINA 0x07
-continue 5
-expectPORTC 0x3C
-checkResult
-
-test "PINA: 0x08 => PORTC: 0x3C"
-setPINA 0x08
-continue 5
-expectPORTC 0x3C
-checkResult
-
-test "PINA: 0x09 => PORTC: 0x3C"
-setPINA 0x09
-continue 5
-expectPORTC 0x3C
-checkResult
-
-test "PINA: 0x0A => PORTC: 0x3E"
-setPINA 0x0A
-continue 5
-expectPORTC 0x3E
-checkResult
-
-test "PINA: 0x0B => PORTC: 0x3E"
-setPINA 0x0B
-continue 5
-expectPORTC 0x3E
-checkResult
-
-test "PINA: 0x0C => PORTC: 0x3E"
-setPINA 0x0C
-continue 5
-expectPORTC 0x3E
-checkResult
-
-test "PINA: 0x0D => PORTC: 0x3F"
-setPINA 0x0D
-continue 5
-expectPORTC 0x3F
-checkResult
-
-test "PINA: 0x0E => PORTC: 0x3F"
-setPINA 0x0E
-continue 5
-expectPORTC 0x3F
-checkResult
-
-test "PINA: 0x0F => PORTC: 0x3F"
-setPINA 0x0F
-continue 5
-expectPORTC 0x3F
-checkResult
-
 # Report on how many tests passed/tests ran
 set $passed=$tests-$failed
 eval "shell echo Passed %d/%d tests.\n",$passed,$tests
